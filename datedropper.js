@@ -1185,6 +1185,9 @@
 			if(pickers[picker.id].large) {
 				picker.element.toggleClass('picker-lg');
 				picker_render_calendar();
+				setTimeout(function(){
+					picker_offset();
+				},550);
 			}
 		},
 		picker_translate_onoff = function() {
