@@ -1559,6 +1559,23 @@
 				.input
 				.val(str)
 				.change();
+
+				if(!!picker_event_enable && typeof picker_oldval !== "undefined" && picker_oldval != str) {
+
+					if(picker_oldval == "") {
+						picker_oldval = str;
+
+					}else{
+						picker_oldval = str;
+
+						var elemEvent = !!picker_pass_id ? picker.input.attr("id") : picker.input[0];
+
+						$(window).trigger(picker_event_change, {
+							elem: elemEvent,
+							value: str
+						});
+					}
+				}
 			
 			}
 		};
@@ -1784,6 +1801,15 @@
 					picker_theme = input.data('theme') || 'primary',
 					picker_translate_mode = (input.data('translate-mode')===true) ? true : false;
 					picker_maxpad = input.data('max-pad') || 8,
+
+					//Save old value, prevent fake change for single instance
+					picker_oldval = ""
+
+					//Event options
+					picker_event_enable = !!options && typeof options.enableEvent !== "undefined" ? options.enableEvent : false,
+					picker_event_change = !!options && typeof options.updateEvent !== "undefined" ? options.updateEvent : "pickerChange",
+					picker_pass_id = !!options && typeof options.passId !== "undefined" ? !!options.passId : false,
+					picker_init_event = !!options && typeof options.initEvent !== "undefined" ? !!options.initEvent : false,
 					
 				pickers[id] = {
 					format : picker_format,
