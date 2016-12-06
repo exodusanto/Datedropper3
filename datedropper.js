@@ -1195,6 +1195,15 @@
 				input = picker.input,
 				left = input.offset().left + input.outerWidth()/2,
 				top = input.offset().top + input.outerHeight();
+
+			// prevent hide
+			left = left < picker.element.outerWidth()/2 
+				? picker.element.outerWidth()/2 + picker_maxpad 
+				: left;
+			left = left > $(window).width() - picker.element.outerWidth()/2
+				? $(window).width() - picker.element.outerWidth()/2 - picker_maxpad 
+				: left;
+
 			picker.element.css({
 				'left' : left,
 				'top' : top
@@ -1771,6 +1780,7 @@
 					picker_min_year = (input.data('min-year')&&is_int(input.data('min-year'))) ? input.data('min-year') : 1970,
 					picker_theme = input.data('theme') || 'primary',
 					picker_translate_mode = (input.data('translate-mode')===true) ? true : false;
+					picker_maxpad = input.data('max-pad') || 8,
 					
 				pickers[id] = {
 					format : picker_format,
