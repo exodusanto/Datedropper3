@@ -1560,20 +1560,48 @@
 				.val(str)
 				.change();
 
-				if(!!picker_event_enable && typeof picker_oldval !== "undefined" && picker_oldval != str) {
+				if(!!picker_event_enable && typeof picker_oldval !== "undefined") {
 
-					if(picker_oldval == "") {
-						picker_oldval = str;
-
-					}else{
-						picker_oldval = str;
-
-						var elemEvent = !!picker_pass_id ? picker.input.attr("id") : picker.input[0];
-
-						$(window).trigger(picker_event_change, {
-							elem: elemEvent,
-							value: str
+					if(picker_oldval.length == 0) {
+						picker_oldval.push({
+							el: picker.input[0],
+							val: str
 						});
+
+					} else {
+						var oldfound = false,
+							oldsame = false;
+
+						$.each(picker_oldval,function(index, elOld) {
+							if(elOld.el == picker.input[0]) {
+								if(elOld.val == str) {
+
+									oldsame = true;
+								} else {
+
+									picker_oldval[index].val = str;
+									oldfound = true;
+								}
+							}
+						});
+
+						if(!oldsame){
+
+							if(!oldfound) {
+								picker_oldval.push({
+									el: picker.input[0],
+									val: str
+								});
+							}else{
+
+								var elemEvent = !!picker_pass_id ? picker.input.attr("id") : picker.input[0];
+
+								$(window).trigger(picker_event_change, {
+									elem: elemEvent,
+									value: str
+								});
+							}
+						}
 					}
 				}
 			
@@ -1802,8 +1830,8 @@
 					picker_translate_mode = (input.data('translate-mode')===true) ? true : false;
 					picker_maxpad = input.data('max-pad') || 8,
 
-					//Save old value, prevent fake change for single instance
-					picker_oldval = ""
+					//Save old value, prevent fake change
+					picker_oldval = [],
 
 					//Event options
 					picker_event_enable = !!options && typeof options.enableEvent !== "undefined" ? options.enableEvent : false,
