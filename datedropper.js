@@ -1200,10 +1200,10 @@
 				top = input.offset().top + input.outerHeight();
 
 			// prevent hide
-			left = left < picker.element.outerWidth()/2 
+			left = left < picker.element.outerWidth()/2 + picker_maxpad 
 				? picker.element.outerWidth()/2 + picker_maxpad 
 				: left;
-			left = left > $(window).width() - picker.element.outerWidth()/2
+			left = left > $(window).width() - picker.element.outerWidth()/2 - picker_maxpad 
 				? $(window).width() - picker.element.outerWidth()/2 - picker_maxpad 
 				: left;
 
